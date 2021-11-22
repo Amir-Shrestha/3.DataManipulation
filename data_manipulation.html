@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DataManipulate</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="container">
+        <h1>Todo list</h1>
+
+        <div class="sorting">
+            <form action="">
+                <select name="user_dropdown" id="user_dropdown" class="select-box">
+                    <option  selected>All User</option>
+                </select>
+                <select name="status" id="status" class="select-box">
+                    <option  selected >All Status</option>
+                    <option value="status1">Completed</option>
+                    <option value="status2">InCom[plete</option>
+                </select>
+                <button type="submit" class="search">Search</button>
+            </form>
+        </div>
+
+        <div id="users" class="users">
+            <!-- single user div -->
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
