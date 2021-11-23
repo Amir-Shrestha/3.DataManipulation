@@ -1,8 +1,8 @@
-alert("Main JavaScript run!")
-const all_users = [];
+// alert("Main JavaScript run!")
+const custome_users = [];
 
+// 1. fetch json_data and change it into suitable format so that it can be easily shown in template
 let url = "https://jsonplaceholder.typicode.com/todos";
-// 1fetch json_data and change it into suitable format so that it can be easily shown in template
 fetch(url)
   .then(function (response) {
     return response.json();
@@ -36,50 +36,97 @@ fetch(url)
     }
 
     //1.5 push all objects of unique_users into users(custome user created array)
-    unique_users.map(function (user_obj) { all_users.push(user_obj) });
+    unique_users.map(function (user_obj) { custome_users.push(user_obj) });
 
-    alert("1. Data Fetched !")
+    // alert("1. Data Fetched !")
 
-    userList(unique_users);
-    displayUser(unique_users); //************************
+    userDropdownList(unique_users);
+    displayUser(unique_users);
 
   });
 
-function userList(all_users){
-  // 3 users_dropdown in sreach form
-  for (let i = 0; i < all_users.length; i++) {
+
+
+  // 2. users_dropdown in sreach form
+function userDropdownList(all_users){
+  // alert("2. Users dropdown")
+  for (let i = 0; i < custome_users.length; i++) {
     var option = document.createElement("option");
-    option.innerHTML = "User Id: " + all_users[i].user_Id;
-    document.getElementById("user_dropdown").appendChild(option);
+    option.innerHTML = "User Id: " + custome_users[i].user_Id;
+    option.value = custome_users[i].user_Id;
+    document.getElementById("userDropdown").appendChild(option);
   }
 }
 
+
+
+
+// 4. Sort user according to value passed from search form
 function sortUser() {
-  alert("2. Sort Users!");
-  const sorted_users = [];
-  displayUser(sorted_users);
+  alert("4. Sort Users!");
+
+  // 4.1 get the sort value from searchForm
+  var selectBox1 = document.getElementById("userDropdown");
+  var selectedUser = selectBox1.value;
+  var selectBox2 = document.getElementById("statusDropdown");
+  var selectedStatus = selectBox2.value;
+  // alert(selectedUser)
+  // alert(selectedStatus)
+
+  //4.2 create new array(filteredUsers) and filter the user from custome_users according to given sort value from searchForm
+  // console.log(custome_users[i])
+
+  const filteredUsers=[];
+  for(i=0; i<custome_users.length; i++){
+    // alert("hi")
+    // console.log("hi")
+    // console.log(custome_users[i])
+    // alert(custome_users[i].user_Id)
+    // alert(selectedUser)
+    if(custome_users[i].user_Id == selectedUser){
+      filteredUsers.push(custome_users[i])
+    }
+  }
+
+  //4.3 pass the filtered_users array to displayUser
+  console.log(filteredUsers)
+  displayUser(filteredUsers, true);
+
+
+  // console.log(custome_users)
+  return false;
 }
 
-function displayUser(users) {
-  console.log("3. Display Users!");
-  // 2 create div for all unique user
+
+
+
+//3. Create div for all unique users and display them
+function displayUser(users, sort=false) {
+  // alert("Sorting " + sort)
+  // alert("Users " + users)
+  // alert("0 index Item  " + users[0])
+  // alert("Len  " + users.length)
+  // alert("Type " + typeof(users))
+  // console.log("Sorting ", false, "123")
+  // alert("Sorting " + false + "123")
+  // alert("3. Display Users!");
   for (let i = 0; i < users.length; i++) {
-    // 2.1 Create new div element with className = 'user-detial'
+    // 3.1 Create new div element with className = 'user-detial'
     var user_div = document.createElement("div");
     user_div.className = "user-detial";
 
-    // 2.2 Create (h3 tag and ol tag) with innerHTML
+    // 3.2 Create (h3 tag and ol tag) with innerHTML
     var h3 = document.createElement("H3");
     h3.innerHTML = "User Id: " + users[i].user_Id;
 
     var ol = document.createElement("ol");
     ol.setAttribute("type", "1");
 
-    // 2.3 Append created (h3 tag  and two ol tags) into newly created div element with className = 'user-detial'
+    // 3.3 Append created (h3 tag  and two ol tags) into newly created div element with className = 'user-detial'
     user_div.appendChild(h3);
     user_div.appendChild(ol);
 
-    // 2.4 Appeend list of titlle of particular user to its respective ol tag
+    // 3.4 Appeend list of titlle of particular user to its respective ol tag
     for (let j = 0; j < users[i].titles.length; j++) {
       var li = document.createElement("li");
       var s = document.createElement("s");
@@ -92,7 +139,17 @@ function displayUser(users) {
       li.appendChild(s);
     }
 
-    // 2.5 Finally append newly created div element with className('user-detial') into avialable div element with className(user)
-    document.getElementById("users").appendChild(user_div);
+    // 3.5 Finally append newly created div element with className('user-detial') into avialable div element with className(user)
+    // alert("Sorting "+ i + sort)
+    if(sort == true){
+      document.getElementById("users").replaceChildren(user_div);
+      // alert(i+"sort");
+      // sort = false;
+    }
+    else{
+      document.getElementById("users").appendChild(user_div);
+      // alert(i+" unsort")
+    }
+    // document.getElementById("users").appendChild(user_div);
   }
 }

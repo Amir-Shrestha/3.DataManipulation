@@ -12,14 +12,14 @@
         <h1>Todo list</h1>
 
         <div class="sorting">
-            <form action="" method="" onsubmit="sortUser()" name="searchForm">
-                <select name="user_dropdown" id="user_dropdown" class="select-box"  name="searchForm">
-                    <option  selected>All User</option>
+            <form action="" method="" onsubmit="return sortUser()" name="searchForm">
+                <select name="userDropdown" id="userDropdown" class="select-box"  name="searchForm">
+                    <option value="all_users" selected>All User</option>
                 </select>
-                <select name="status" id="status" class="select-box">
+                <select name="statusDropdown" id="statusDropdown" class="select-box">
                     <option  selected >All Status</option>
-                    <option value="status1">Completed</option>
-                    <option value="status2">InCom[plete</option>
+                    <option value="completed">Completed</option>
+                    <option value="incomplete">InComplete</option>
                 </select>
                 <button type="submit" class="search">Search</button>
             </form>
