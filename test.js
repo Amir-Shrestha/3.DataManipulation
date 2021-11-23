@@ -1,8 +1,7 @@
-alert("Main JavaScript run!")
-const all_users = [];
+const users = [];
 
+// 1 fetch json_data and change it into suitable format so that it can be easily shown in template
 let url = "https://jsonplaceholder.typicode.com/todos";
-// 1fetch json_data and change it into suitable format so that it can be easily shown in template
 fetch(url)
   .then(function (response) {
     return response.json();
@@ -15,6 +14,7 @@ fetch(url)
         unique_users_id.push(all_users[i].userId);
       }
     }
+    // console.log(unique_users_id)
 
     // 1.2 create new array(unique_users) of objects containning (user_Id:1)key:value pairs for all the id in unique_users_id list/array
     const unique_users = [];
@@ -22,6 +22,7 @@ fetch(url)
       unique_users.push({ user_Id: unique_users_id[i] }); // 1.3 add new titles(array) property to the all object inside unique_users array
       unique_users[i].titles = [];
     }
+    // console.log(unique_users)
 
     //1.4 push all the title of objects in json_data into new titles(array) property created to the all object inside unique_users array
     for (let i = 0; i < unique_users.length; i++) {
@@ -34,35 +35,34 @@ fetch(url)
         }
       }
     }
+    // console.log(unique_users);
 
     //1.5 push all objects of unique_users into users(custome user created array)
-    unique_users.map(function (user_obj) { all_users.push(user_obj) });
-
-    alert("1. Data Fetched !")
-
-    userList(unique_users);
-    displayUser(unique_users); //************************
-
+    for (let i = 0; i < unique_users.length; i++) {
+      users.push(unique_users[i]);
+    }
+    // console.log(users);
   });
 
-function userList(all_users){
-  // 3 users_dropdown in sreach form
-  for (let i = 0; i < all_users.length; i++) {
-    var option = document.createElement("option");
-    option.innerHTML = "User Id: " + all_users[i].user_Id;
-    document.getElementById("user_dropdown").appendChild(option);
-  }
+// 2 users_dropdown in search form
+for (let i = 0; i < users.length; i++) {
+  var option = document.createElement("option");
+  option.innerHTML = "User Id: " + unique_users[i].user_Id;
+  document.getElementById("user_dropdown").appendChild(option);
 }
 
-function sortUser() {
-  alert("2. Sort Users!");
-  const sorted_users = [];
-  displayUser(sorted_users);
+
+// 3 sort users
+function sortUser()
+{
+  alert("users sorted!");
+  displayUser();
 }
 
-function displayUser(users) {
-  console.log("3. Display Users!");
-  // 2 create div for all unique user
+
+//4 create div for sorted unique user and display users
+function displayUser() {
+  alert("display user");
   for (let i = 0; i < users.length; i++) {
     // 2.1 Create new div element with className = 'user-detial'
     var user_div = document.createElement("div");
@@ -95,4 +95,22 @@ function displayUser(users) {
     // 2.5 Finally append newly created div element with className('user-detial') into avialable div element with className(user)
     document.getElementById("users").appendChild(user_div);
   }
+  return false;
 }
+
+
+
+
+
+
+    // //1.5 push all objects of unique_users into users(custome user created array)
+
+    // // 1.5.1 using for loop
+    // // for (let i = 0; i < unique_users.length; i++) {
+    // //   users.push(unique_users[i]);
+    // // }
+    // //or
+
+    //  // 1.5.2 using for map
+    //  unique_users.map(function (user_obj) { users.push(user_obj) });
+    //  // console.log(users);
