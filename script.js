@@ -1,4 +1,3 @@
-// alert("Main JavaScript run!")
 const custome_users = [];
 
 // 1. fetch json_data and change it into suitable format so that it can be easily shown in template
@@ -36,20 +35,16 @@ fetch(url)
     }
 
     //1.5 push all objects of unique_users into users(custome user created array)
-    unique_users.map(function (user_obj) { custome_users.push(user_obj) });
-
-    // alert("1. Data Fetched !")
-
-    userDropdownList(unique_users);
+    // unique_users.map(function (user_obj) { custome_users.push(user_obj) });
+    for (i = 0; i < unique_users.length; i++) {
+      custome_users.push(unique_users[i]);
+    }
+    userDropdownList();
     displayUser(unique_users);
-
   });
 
-
-
-  // 2. users_dropdown in sreach form
-function userDropdownList(all_users){
-  // alert("2. Users dropdown")
+// 2. users_dropdown in sreach form
+function userDropdownList() {
   for (let i = 0; i < custome_users.length; i++) {
     var option = document.createElement("option");
     option.innerHTML = "User Id: " + custome_users[i].user_Id;
@@ -58,58 +53,51 @@ function userDropdownList(all_users){
   }
 }
 
-
-
-
 // 4. Sort user according to value passed from search form
 function sortUser() {
-  alert("4. Sort Users!");
-
   // 4.1 get the sort value from searchForm
   var selectBox1 = document.getElementById("userDropdown");
   var selectedUser = selectBox1.value;
   var selectBox2 = document.getElementById("statusDropdown");
   var selectedStatus = selectBox2.value;
-  // alert(selectedUser)
-  // alert(selectedStatus)
 
   //4.2 create new array(filteredUsers) and filter the user from custome_users according to given sort value from searchForm
-  // console.log(custome_users[i])
+  var filteredUsers = [];
+  var sort_a_user = false;
 
-  const filteredUsers=[];
-  for(i=0; i<custome_users.length; i++){
-    // alert("hi")
-    // console.log("hi")
-    // console.log(custome_users[i])
-    // alert(custome_users[i].user_Id)
-    // alert(selectedUser)
-    if(custome_users[i].user_Id == selectedUser){
-      filteredUsers.push(custome_users[i])
-    }
+  //sort to user
+  if (selectedUser === "all_users") {
+    filteredUsers = custome_users.map((user_obj) => ({ ...user_obj }));
+  } else {
+    filteredUsers = custome_users.filter(
+      (user_obj) => user_obj.user_Id == selectedUser
+    );
+    sort_a_user = true;
   }
 
-  //4.3 pass the filtered_users array to displayUser
-  console.log(filteredUsers)
+  //sort according to status
+  if (selectedStatus == "completed") {
+    filteredUsers = getFilteredByStatus(filteredUsers, true);
+  } else if (selectedStatus == "incomplete") {
+    filteredUsers = getFilteredByStatus(filteredUsers, false);
+  }
   displayUser(filteredUsers, true);
-
-
-  // console.log(custome_users)
-  return false;
+  return;
 }
 
-
-
+function getFilteredByStatus(filteredUsers, status) {
+  return filteredUsers.map((user_obj) => {
+    return {
+      ...user_obj,
+      titles: user_obj.titles.filter(
+        (title_obj) => title_obj.completed == status
+      ),
+    };
+  });
+}
 
 //3. Create div for all unique users and display them
-function displayUser(users, sort=false) {
-  // alert("Sorting " + sort)
-  // alert("Users " + users)
-  // alert("0 index Item  " + users[0])
-  // alert("Len  " + users.length)
-  // alert("Type " + typeof(users))
-  // console.log("Sorting ", false, "123")
-  // alert("Sorting " + false + "123")
-  // alert("3. Display Users!");
+function displayUser(users, sort = false) {
   for (let i = 0; i < users.length; i++) {
     // 3.1 Create new div element with className = 'user-detial'
     var user_div = document.createElement("div");
@@ -140,16 +128,11 @@ function displayUser(users, sort=false) {
     }
 
     // 3.5 Finally append newly created div element with className('user-detial') into avialable div element with className(user)
-    // alert("Sorting "+ i + sort)
-    if(sort == true){
+    if (sort) {
       document.getElementById("users").replaceChildren(user_div);
-      // alert(i+"sort");
-      // sort = false;
-    }
-    else{
+      sort = false;
+    } else {
       document.getElementById("users").appendChild(user_div);
-      // alert(i+" unsort")
     }
-    // document.getElementById("users").appendChild(user_div);
   }
 }
