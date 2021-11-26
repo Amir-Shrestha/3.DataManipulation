@@ -65,9 +65,10 @@ function sortUser() {
   var filteredUsers = [];
   var sort_a_user = false;
 
-  //sort to user
+  //filter to user
   if (selectedUser === "all_users") {
-    filteredUsers = custome_users.map((user_obj) => ({ ...user_obj }));
+    filteredUsers = custome_users.map((user_obj) => user_obj);
+    // filteredUsers = custome_users.map((user_obj) => ({ ...user_obj }));
   } else {
     filteredUsers = custome_users.filter(
       (user_obj) => user_obj.user_Id == selectedUser
@@ -75,11 +76,12 @@ function sortUser() {
     sort_a_user = true;
   }
 
-  //sort according to status
-  if (selectedStatus == "completed") {
-    filteredUsers = getFilteredByStatus(filteredUsers, true);
-  } else if (selectedStatus == "incomplete") {
-    filteredUsers = getFilteredByStatus(filteredUsers, false);
+  //filter according to status
+  if (selectedStatus != "all_status") {
+    filteredUsers = getFilteredByStatus(
+      filteredUsers,
+      selectedStatus == "completed"
+    );
   }
   displayUser(filteredUsers, true);
   return;
@@ -87,12 +89,13 @@ function sortUser() {
 
 function getFilteredByStatus(filteredUsers, status) {
   return filteredUsers.map((user_obj) => {
-    return {
-      ...user_obj,
+    const filteredUserTask = {
+      user_id: user_obj.user_Id,
       titles: user_obj.titles.filter(
         (title_obj) => title_obj.completed == status
       ),
     };
+    return filteredUserTask;
   });
 }
 
