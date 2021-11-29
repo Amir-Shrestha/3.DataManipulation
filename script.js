@@ -14,6 +14,11 @@ fetch(url)
         uniqueUserId.push(uniqueUser.userId);
       }
     });
+    // allUsers.forEach((uniqueUser) =>
+    //   uniqueUserId.push(uniqueUser.userId)
+    //     ? uniqueUserId.includes(uniqueUser.userId) == false
+    //     : pass
+    // );
 
     // 1.2 create new array(uniqueUsersObj) of objects containning (userId:1)key:value pairs for all the id in uniqueUserId list/array
     const uniqueUsersObj = uniqueUserId.map((id) => {
@@ -88,8 +93,8 @@ function sortUser() {
 
   //filter to user
   if (selectedUser == "all_users") {
-    filteredUsers = customeUsers.map((user_obj) => user_obj);
-    // customeUsers.forEach((user_obj) => filteredUsers.push(user_obj));
+    // filteredUsers = customeUsers.map((user_obj) => user_obj);
+    customeUsers.forEach((user_obj) => filteredUsers.push(user_obj));
   } else {
     filteredUsers = customeUsers.filter(
       (user_obj) => user_obj.userId == selectedUser
@@ -101,7 +106,7 @@ function sortUser() {
   if (selectedStatus != "all_status") {
     filteredUsers = filterUserByTaskStatus(
       filteredUsers,
-      selectedStatus == "completed"
+      selectedStatus == "completed" // gives true|false
     );
   }
   displayUser(filteredUsers, true);
@@ -123,40 +128,35 @@ function filterUserByTaskStatus(filteredUsers, status) {
 //3. Create div for all unique users and display them
 function displayUser(users, sort = false) {
   for (let i = 0; i < users.length; i++) {
-    // 3.1 Create new div element with className = 'user-detial'
-    var user_div = document.createElement("div");
-    user_div.className = "user-detial";
-
-    // 3.2 Create (h3 tag and ol tag) with innerHTML
-    var h3 = document.createElement("H3");
-    h3.innerHTML = "User Id: " + users[i].userId;
-
-    var ol = document.createElement("ol");
-    ol.setAttribute("type", "1");
-
-    // 3.3 Append created (h3 tag  and two ol tags) into newly created div element with className = 'user-detial'
-    user_div.appendChild(h3);
-    user_div.appendChild(ol);
-
-    // 3.4 Appeend list of titlle of particular user to its respective ol tag
-    for (let j = 0; j < users[i].tasks.length; j++) {
-      var li = document.createElement("li");
-      var s = document.createElement("s");
-      if (users[i].tasks[j].completed == true) {
-        s.innerHTML = users[i].tasks[j].title;
-      } else {
-        li.innerHTML = users[i].tasks[j].title;
-      }
-      ol.appendChild(li);
-      li.appendChild(s);
-    }
-
     // 3.5 Finally append newly created div element with className('user-detial') into avialable div element with className(user)
+    let user_div_open = `
+    <div class="user-detial" >
+    <h3>User Id: ${users[i].userId}</h3>
+    <ol type="1">`;
+
+    for (let j = 0; j < users[i].tasks.length; j++) {
+      if (users[i].tasks[j].completed == true) {
+        user_div_open += `
+        <li><s>${users[i].tasks[j].title}</s></li>
+        `;
+      } else {
+        user_div_open += `
+        <li>${users[i].tasks[j].title}</li>
+        `;
+      }
+    }
+    let user_div_close = `</ol></div>`;
+    let user_detial_div = user_div_open + user_div_close;
     if (sort) {
-      document.getElementById("users").replaceChildren(user_div);
+      document.getElementById("users").innerHTML = user_detial_div;
       sort = false;
     } else {
-      document.getElementById("users").appendChild(user_div);
+      document.getElementById("users").innerHTML += user_detial_div;
     }
+    console.log("A_userdiv");
+    // console.log(user_detial_div);
   }
 }
+
+// Back-Tics Syntax
+// Template Literals use back-ticks (``) rather than the quotes ("") to define a string
