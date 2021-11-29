@@ -137,11 +137,13 @@ function displayUser(users, sort = false) {
     for (let j = 0; j < users[i].tasks.length; j++) {
       if (users[i].tasks[j].completed == true) {
         user_div_open += `
-        <li><s>${users[i].tasks[j].title}</s></li>
+        <li><input type="checkbox" id="task1" name="task1" value="task1">
+        <label for="task1"><s>${users[i].tasks[j].title}</s></label></li>
         `;
       } else {
         user_div_open += `
-        <li>${users[i].tasks[j].title}</li>
+        <li><input type="checkbox" id="task1" name="task1" value="task1">
+        <label for="task1">${users[i].tasks[j].title}</label></li>
         `;
       }
     }
